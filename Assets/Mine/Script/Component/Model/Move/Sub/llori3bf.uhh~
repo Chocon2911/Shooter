@@ -1,0 +1,40 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DirectForward : BaseComponent
+{
+    //==========================================Variable==========================================
+    [Header("===Move Forward===")]
+    // Primary
+    [SerializeField] private CBTransform mainObj;
+    // Reference
+    [SerializeField] List<CBVector3> refMoveDir = new();
+
+    //===========================================Unity============================================
+    public override void LoadComponents()
+    {
+        base.LoadComponents();
+        this.LoadComponent(ref this.mainObj, transform.Find("Data/MainObj"), "LoadMainObj()");
+    }
+
+    //=======================================Base Component=======================================
+    public override void OnUpdate()
+    {
+        base.OnUpdate();
+        this.ApplyMoveDir();
+    }
+
+    //===========================================Method===========================================
+    private void ApplyMoveDir()
+    {
+        if(refMoveDir.Count < 0) return;
+        Vector3 moveDir = GetMoveDir();
+        foreach (var item in refMoveDir) item.Value = moveDir;
+    }
+
+    private Vector3 GetMoveDir()
+    {
+        return mainObj != null ? mainObj.value.forward : Vector3.zero;
+    }
+}

@@ -1,0 +1,71 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[Serializable]
+public class Cooldown
+{
+    //==========================================Variable==========================================
+    [SerializeField] private float timeLimit;
+    [SerializeField] private float timer;
+    [SerializeField] private float waitTime;
+    [SerializeField] private bool isReady;
+
+    //==========================================Get Set===========================================
+    public float TimeLimit
+    {
+        get => timeLimit;
+        set => timeLimit = value;
+    }
+
+    public float Timer
+    {
+        get => timer;
+        set => this.timer = value;
+    }
+
+    public float WaitTime
+    {
+        get => waitTime;
+        set => waitTime = value;
+    }
+
+    public bool IsReady
+    {
+        get => isReady;
+    }
+
+    //========================================Constructor=========================================
+    public Cooldown(float timeLimit)
+    {
+        // Stat
+        this.timeLimit = timeLimit;
+        this.timer = 0;
+    }
+
+    //===========================================Method===========================================
+    public void CoolingDown()
+    {
+        if (this.timer >= this.timeLimit)
+        {
+            isReady = true;
+            return;
+        }
+
+        this.waitTime = Time.deltaTime;
+        this.timer += this.waitTime;
+    }
+
+    public void ResetStatus()
+    {
+        this.timer = 0;
+        this.isReady = false;
+    }
+
+    public void FinishCD()
+    {
+        this.timer = this.timeLimit;
+        this.isReady = true;
+    }
+}
